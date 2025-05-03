@@ -1,2 +1,0 @@
-## Team Members
-- Joshua Bell
