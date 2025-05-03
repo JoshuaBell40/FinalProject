@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cool To Do App</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --success-color: #00b894;
+            --danger-color: #d63031;
+            --warning-color: #fdcb6e;
+            --light-color: #f5f6fa;
+            --dark-color: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .task-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .priority-select {
+            padding: 12px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            background: white;
+            font-size: 16px;
+        }
+
+        .add-button {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .add-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .task-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s;
+        }
+
+        .task-item:hover {
+            transform: translateX(5px);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+
+        .priority-tag {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .priority-medium {
+            background-color: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .priority-low {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .delete-button {
+            padding: 8px 15px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cool To Do App</h1>
+    
+    <form class="task-form" action="/add" method="POST">
+        <div class="form-group">
+            <input type="text" name="task" class="task-input" placeholder="Enter a new task" required>
+            <select name="priority" class="priority-select">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+            </select>
+            <button type="submit" class="add-button">Add Task</button>
+        </div>
+    </form>
+
+    <ul class="task-list">
+        {% for task in tasks %}
+        <li class="task-item">
+            <input type="checkbox" class="task-checkbox" 
+                   onclick="window.location.href='/toggle/{{ loop.index0 }}'"
+                   {% if task.completed %}checked{% endif %}>
+            <span class="task-text {% if task.completed %}completed{% endif %}">
+                {{ task.text }}
+            </span>
+            <span class="priority-tag priority-{{ task.priority }}">
+                {{ task.priority }}
+            </span>
+            <a href="/delete/{{ loop.index0 }}" class="delete-button">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html> 

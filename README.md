@@ -25,7 +25,7 @@ My  project is an AI-powered email assistant that reads and responds to emails u
 - Improve prompt engineering and AI integration
 
 ## 3. Implementation Plan
-We’ll use Python as the primary language. The OpenAI GPT-4 API will be used to generate responses. Emails will be stored in a `.csv` file for testing purposes. We will explore Gmail API integration depending on how much progress we make.
+We'll use Python as the primary language. The OpenAI GPT-4 API will be used to generate responses. Emails will be stored in a `.csv` file for testing purposes. We will explore Gmail API integration depending on how much progress we make.
 
 Key libraries:
 - `openai` for GPT integration
@@ -48,10 +48,45 @@ Link to Google Doc: [https://docs.google.com/document/d/1yL4gKJf_1GMrdF_EtorhF4K
 
 
 ## 6. Risks and Limitations
-- OpenAI API costs (we’ll use small inputs and control token usage)
+- OpenAI API costs (we'll use small inputs and control token usage)
 - Gmail API setup may be time-consuming, so we'll treat it as optional
 - Ensuring clean email formatting for GPT input may require trial and error
 
 ## 7. Additional Course Content
 - More help on using external APIs (especially OpenAI and Gmail)
 - Examples of small automation tools in Python
+
+# Simple To Do Application
+
+A minimal To Do web application built with Python and Flask.
+
+## Features
+- Add new tasks
+- Delete existing tasks
+- Simple and clean interface
+- In-memory task storage
+
+## Requirements
+- Python 3.x
+- Flask
+
+## Installation
+1. Clone this repository
+2. Install the required packages:
+   ```
+   pip install -r requirements.txt
+   ```
+
+## Running the Application
+1. Navigate to the project directory
+2. Run the application:
+   ```
+   python app.py
+   ```
+3. Open your web browser and go to `http://localhost:5000`
+
+## Usage
+- To add a task: Type your task in the input field and click "Add Task"
+- To delete a task: Click the "Delete" button next to the task you want to remove
+
+Note: Tasks are stored in memory and will be cleared when the application is restarted.
