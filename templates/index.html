@@ -1,183 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cool To Do App</title>
-    <style>
-        :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #a29bfe;
-            --success-color: #00b894;
-            --danger-color: #d63031;
-            --warning-color: #fdcb6e;
-            --light-color: #f5f6fa;
-            --dark-color: #2d3436;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: var(--light-color);
-            color: var(--dark-color);
-        }
-
-        h1 {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .task-form {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .task-input {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .priority-select {
-            padding: 12px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 5px;
-            background: white;
-            font-size: 16px;
-        }
-
-        .add-button {
-            padding: 12px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .add-button:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .task-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .task-item {
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: transform 0.2s;
-        }
-
-        .task-item:hover {
-            transform: translateX(5px);
-        }
-
-        .task-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .task-text {
-            flex: 1;
-            font-size: 16px;
-        }
-
-        .task-text.completed {
-            text-decoration: line-through;
-            color: #95a5a6;
-        }
-
-        .priority-tag {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .priority-high {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        .priority-medium {
-            background-color: var(--warning-color);
-            color: var(--dark-color);
-        }
-
-        .priority-low {
-            background-color: var(--success-color);
-            color: white;
-        }
-
-        .delete-button {
-            padding: 8px 15px;
-            background-color: var(--danger-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .delete-button:hover {
-            background-color: #c0392b;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern To-Do App</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Cool To Do App</h1>
+    <h1><i class="fas fa-check-circle"></i> Modern To-Do App</h1>
     
     <form class="task-form" action="/add" method="POST">
         <div class="form-group">
             <input type="text" name="task" class="task-input" placeholder="Enter a new task" required>
+            <input type="date" name="due_date" class="date-input" min="{{ today }}">
             <select name="priority" class="priority-select">
                 <option value="low">Low Priority</option>
                 <option value="medium" selected>Medium Priority</option>
                 <option value="high">High Priority</option>
             </select>
-            <button type="submit" class="add-button">Add Task</button>
+            <button type="submit" class="add-button">
+                <i class="fas fa-plus"></i> Add Task
+            </button>
         </div>
     </form>
 
+    <div class="filter-container">
+        <button class="filter-button active" data-filter="all">
+            <i class="fas fa-list"></i> All Tasks
+        </button>
+        <button class="filter-button" data-filter="active">
+            <i class="fas fa-clock"></i> Active
+        </button>
+        <button class="filter-button" data-filter="completed">
+            <i class="fas fa-check"></i> Completed
+        </button>
+        <button class="filter-button" data-filter="today">
+            <i class="fas fa-calendar-day"></i> Due Today
+        </button>
+        <button class="filter-button" data-filter="upcoming">
+            <i class="fas fa-calendar-week"></i> Upcoming
+        </button>
+    </div>
+
     <ul class="task-list">
         {% for task in tasks %}
-        <li class="task-item">
+        <li class="task-item" 
+            data-priority="{{ task.priority }}" 
+            data-completed="{{ 'true' if task.completed else 'false' }}" 
+            data-due-date="{{ task.due_date if task.due_date else '' }}">
             <input type="checkbox" class="task-checkbox" 
                    onclick="window.location.href='/toggle/{{ loop.index0 }}'"
                    {% if task.completed %}checked{% endif %}>
             <span class="task-text {% if task.completed %}completed{% endif %}">
                 {{ task.text }}
             </span>
+            <span class="due-date">
+                <i class="fas fa-calendar"></i> {{ task.due_date if task.due_date else 'No due date' }}
+            </span>
             <span class="priority-tag priority-{{ task.priority }}">
+                <i class="fas fa-{% if task.priority == 'high' %}exclamation-circle{% elif task.priority == 'medium' %}minus-circle{% else %}check-circle{% endif %}"></i>
                 {{ task.priority }}
             </span>
-            <a href="/delete/{{ loop.index0 }}" class="delete-button">Delete</a>
+            <a href="/delete/{{ loop.index0 }}" class="delete-button">
+                <i class="fas fa-trash"></i> Delete
+            </a>
         </li>
         {% endfor %}
     </ul>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html> 
